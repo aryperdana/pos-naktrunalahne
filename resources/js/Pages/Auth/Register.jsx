@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { Textarea } from "../AdminPanel/Components";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +15,7 @@ export default function Register() {
         username: "",
         password: "",
         level: "2",
+        alamat: "",
     });
 
     useEffect(() => {
@@ -116,6 +118,12 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
+                <Textarea
+                    label="Alamat"
+                    name="alamat"
+                    value={data.alamat}
+                    onChange={handleOnChange}
+                />
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route("login")}
