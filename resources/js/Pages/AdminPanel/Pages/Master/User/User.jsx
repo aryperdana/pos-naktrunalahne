@@ -37,6 +37,7 @@ const User = ({ user_data }) => {
         username: "",
         password: "",
         level: "1",
+        alamat: "",
     });
 
     const handleOnChange = (event) => {
@@ -131,6 +132,7 @@ const User = ({ user_data }) => {
                                     <th className="text-center">Nama</th>
                                     <th className="text-center">Email</th>
                                     <th className="text-center">Username</th>
+                                    <th className="text-center">Alamat</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,6 +159,7 @@ const User = ({ user_data }) => {
                                                                 email: val.email,
                                                                 level: val.level,
                                                                 id: val.id,
+                                                                alamat: val.alamat,
                                                             });
                                                         }}
                                                     >
@@ -177,6 +180,7 @@ const User = ({ user_data }) => {
                                             <td>{val.name}</td>
                                             <td>{val.email}</td>
                                             <td>{val.username}</td>
+                                            <td>{val.alamat}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -262,6 +266,15 @@ const User = ({ user_data }) => {
                                 className="hidden"
                                 name="level"
                                 value={data.level}
+                            />
+
+                            <Textarea
+                                label="Alamat"
+                                name="alamat"
+                                placeholder="Masukan Alamat"
+                                onChange={handleOnChange}
+                                value={data?.alamat}
+                                errorText={errors?.alamat}
                             />
 
                             <div className="modal-action">

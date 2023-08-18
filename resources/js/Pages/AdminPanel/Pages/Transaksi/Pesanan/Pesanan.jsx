@@ -124,10 +124,14 @@ const Pesanan = ({ pesanan_data }) => {
                                         Alamat Pengiriman
                                     </th>
                                     <th className="text-center">Keterangan</th>
+                                    <th className="text-center">
+                                        Status Pembayaran
+                                    </th>
                                     <th className="text-center">Kirim</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {console.log(pesanan_data)}
                                 {pesanan_data?.data?.length > 0 ? (
                                     pesanan_data?.data?.map((val, ind) => (
                                         <tr>
@@ -154,6 +158,11 @@ const Pesanan = ({ pesanan_data }) => {
                                             <td>{val.nama_pemesan}</td>
                                             <td>{val.alamat_pengiriman}</td>
                                             <td>{val.keterangan}</td>
+                                            <td>
+                                                {val.status_pembayaran === 1
+                                                    ? "Sudah Dibayar"
+                                                    : "Belum Dibayar"}
+                                            </td>
                                             <td className="text-center">
                                                 {val.terkirim ? (
                                                     "Data Sudah Dikirim"

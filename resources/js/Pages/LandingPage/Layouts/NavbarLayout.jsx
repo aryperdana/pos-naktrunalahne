@@ -378,6 +378,11 @@ export const NavbarLayout = ({
                             <li>
                                 <Link href="history">History</Link>
                             </li>
+                            <li>
+                                <Link href="pembelian-pending">
+                                    Menunggu Pembayaran
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="flex-none">

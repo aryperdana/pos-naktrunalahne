@@ -113,4 +113,22 @@ class SemuaProdukController extends Controller
             'keranjang' => $keranjang
         ]);
     }
+
+    public function produkDiskon(Request $request)
+    {
+        $id_customer = Auth::user()->id ?? 0;
+        // dd($id_customer);
+        $keranjang = Keranjang::where('is_checkout', 0)->where('id_customer', $id_customer)->with('barang')->get();
+      
+        $key = $request->key;
+        $barang = Barang::with('kategori')
+            ->orderBy('created_at', 'DESC')->where('diskon', '>' , '0')->where('nama_barang', 'LIKE', '%' . $key . '%')  
+            ->paginate(10);
+        return Inertia::render('LandingPage/Pages/SemuaProduk/SemuaProduk', [
+            'barang_data' => $barang,
+            'user' => Auth::user(),
+            'keranjang' => $keranjang
+        ]);
+    }
+
 }

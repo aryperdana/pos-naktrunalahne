@@ -36,12 +36,14 @@ Route::get('/', function () {
 
 Route::get('/semua-produk', [SemuaProdukController::class, 'index'])->middleware('access.without.login');
 Route::get('/produk-terbaru', [SemuaProdukController::class, 'produkTerbaru'])->middleware('access.without.login');
+Route::get('/diskon-produk', [SemuaProdukController::class, 'produkDiskon'])->middleware('access.without.login');
 Route::get('/udeng', [SemuaProdukController::class, 'udeng'])->middleware('access.without.login');
 Route::get('/saput', [SemuaProdukController::class, 'saput'])->middleware('access.without.login');
 Route::get('/kamen', [SemuaProdukController::class, 'kamen'])->middleware('access.without.login');
 Route::get('/baju', [SemuaProdukController::class, 'baju'])->middleware('access.without.login');
 Route::get('/profile-customer/{id}', [UserController::class, 'profile'])->middleware('access.without.login');
 Route::get('/history', [PesananController::class, 'history'])->middleware('access.without.login');
+Route::get('/pembelian-pending', [PesananController::class, 'pembelianPending'])->middleware('access.without.login');
 Route::get('/register', function () {
     return Inertia::render('Auth/Register', [ 'user' => Auth::user(),]);
 })->middleware('access.without.login');
@@ -62,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('/admin/barang', BarangController::class);
         Route::post('/admin/barang/ubah/{id}', [BarangController::class, 'ubah']);
         Route::resource('/admin/pesanan', PesananController::class);
+        Route::post('/pesanan/ubah/{id}', [PesananController::class, 'ubah']);
         Route::resource('/admin/kasir', KasirController::class);
         Route::resource('/admin/keranjang', KeranjangController::class);
         Route::resource('/admin/laporan-rekap-penjualan', LaporanRekapPenjualanController::class);

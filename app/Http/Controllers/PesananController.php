@@ -37,6 +37,17 @@ class PesananController extends Controller
         ]);
     }
 
+    public function pembelianPending(Request $request)
+    {
+        $key = $request->key;
+        $pesanan = Pesanan::with('detail_pesanan')->orderBy('created_at', 'DESC')->where('status_pembayaran', 0)->where('is_online', 1)->where('id_customer', Auth::user()->id)->where('nama_pemesan', 'LIKE', '%' . $key . '%')  
+            ->paginate(10);
+        return Inertia::render('LandingPage/Pages/PembelianPending', [
+            'pesanan_data' => $pesanan,
+        ]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -88,6 +99,7 @@ class PesananController extends Controller
         $pesanan->is_online = $request->is_online;
         $pesanan->terkirim = $request->terkirim;
         $pesanan->foto_bukti = $image;
+        $pesanan->status_pembayaran = $request->status_pembayaran;
         $pesanan->id_customer = Auth::user()->id;
         $pesanan->save();
 
@@ -207,6 +219,53 @@ class PesananController extends Controller
         ], 200);
     }
 
+    public function ubah(Request $request, $id)
+    {
+        $request->validate([
+            'nama_pemesan' => 'required',
+            'alamat_pengiriman' => 'required'
+        ],
+        [
+            'nama_pemesan.required' => 'Nama Pemesan Tidak Boleh Kosong',
+            'alamat_pengiriman.required' => 'Alamat Tidak Boleh Kosong',
+        ]);
+
+        if ($request->hasFile('foto_bukti')) {
+            $image = $request->file('foto_bukti')->store('uploads');
+        } else {
+            $image = '';
+        }
+
+
+        $date = $request->tanggal;
+ 
+        $year = Carbon::createFromFormat('Y-m-d', $date)->format('Y');
+        $month = Carbon::createFromFormat('Y-m-d', $date)->format('m');
+        $prefix = $year . '/' . $month . '/PSN/';
+        $no = Auth::user()->level === '1' ? $request->no_transaksi : IdGenerator::generate(['table' => 'pesanans', 'field' =>'no_transaksi', 'length' => 16, 'prefix' => $prefix, 'reset_on_prefix_change' => true]);
+      
+      
+        
+
+        $pesanan = Pesanan::find($request->id);
+        $pesanan->no_transaksi = $request->no_transaksi;
+        $pesanan->tanggal = $request->tanggal;
+        $pesanan->nama_pemesan = $request->nama_pemesan;
+        $pesanan->alamat_pengiriman = $request->alamat_pengiriman;
+        $pesanan->keterangan = $request->keterangan;
+        $pesanan->is_online = $request->is_online;
+        $pesanan->terkirim = $request->terkirim;
+        $pesanan->foto_bukti = $image;
+        $pesanan->status_pembayaran = $request->status_pembayaran;
+        $pesanan->id_customer = Auth::user()->id;
+        $pesanan->save();
+
+
+        if (Auth::user()->level === '1') {
+            return to_route('pesanan.index');
+        }
+    }
+
+}
 
    
-}

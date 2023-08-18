@@ -11,6 +11,8 @@ import {
     Legend,
 } from "chart.js";
 import MainLayout from "../Layouts";
+import { TbCategory2 } from "react-icons/tb";
+import { HiOutlineStatusOnline, HiOutlineStatusOffline } from "react-icons/hi";
 
 ChartJS.register(
     CategoryScale,
@@ -43,7 +45,12 @@ const totalDays = new Date(
 
 const labels = Array.from({ length: totalDays }, (_, i) => i + 1);
 
-export default function Dashboard({ dataDetail }) {
+export default function Dashboard({
+    dataDetail,
+    totalBarangByKategori,
+    totalOnline,
+    totalOffline,
+}) {
     const mappingDataDetail = dataDetail.map((res) => ({
         tanggal: new Date(res.tanggal).getDate(),
         total: res.total,
@@ -66,8 +73,16 @@ export default function Dashboard({ dataDetail }) {
             },
         ],
     };
-    console.log(dataDetail);
-    console.log(dataSet);
+
+    const rupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+        }).format(number);
+    };
+
+    console.log(totalOffline);
+
     return (
         <>
             <MainLayout title="Dashboard" navbarTitle="Dashboard">
@@ -76,9 +91,60 @@ export default function Dashboard({ dataDetail }) {
                         <h2 className="card-title">Dashboard</h2>
                     </div>
                 </div>
-                <div className="card w-full max-w-4xl bg-base-100 shadow-sm mt-10">
-                    <div className="card-body">
-                        <Line options={options} data={data} />
+                <div className="flex gap-3 w-full">
+                    {totalBarangByKategori?.map((val) => (
+                        <div className="card w-3/12 max-w-4xl bg-base-100 shadow-sm mt-10">
+                            <div className="card-body p-3">
+                                <h2 className="card-title flex justify-between">
+                                    <TbCategory2 color="blue" />
+                                    {val?.kategori?.nama_kategori_barang}
+                                </h2>
+                                <hr />
+                                <div className="flex justify-between">
+                                    <b>Total</b>
+                                    <small>
+                                        <b>{rupiah(val?.total)}</b>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex gap-3">
+                    <div className="card w-6/12 bg-base-100 shadow-sm mt-10">
+                        <div className="card-body">
+                            <Line options={options} data={data} />
+                        </div>
+                    </div>
+                    <div className="card w-3/12 max-w-4xl h-1/3 bg-base-100 shadow-sm mt-10">
+                        <div className="card-body p-3">
+                            <h2 className="card-title flex justify-between">
+                                <HiOutlineStatusOnline color="green" />
+                                Penjualan Online
+                            </h2>
+                            <hr />
+                            <div className="flex justify-between">
+                                <b>Total</b>
+                                <small>
+                                    <b>{rupiah(totalOnline[0]?.total)}</b>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card w-3/12 max-w-4xl h-1/3 bg-base-100 shadow-sm mt-10">
+                        <div className="card-body p-3">
+                            <h2 className="card-title flex justify-between">
+                                <HiOutlineStatusOffline color="red" />
+                                Penjualan Offline
+                            </h2>
+                            <hr />
+                            <div className="flex justify-between">
+                                <b>Total</b>
+                                <small>
+                                    <b>{rupiah(totalOffline[0]?.total)}</b>
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </MainLayout>

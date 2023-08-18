@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('keterangan');
             $table->string('id_customer')->nullable();
             $table->string('foto_bukti')->nullable();
+            $table->boolean('status_pembayaran');
             $table->boolean('terkirim');
             $table->boolean('is_online');
             $table->timestamps();

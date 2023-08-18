@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { Textarea } from "../AdminPanel/Components";
 
 export default function Register({ user_data }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +15,7 @@ export default function Register({ user_data }) {
         username: user_data.username ?? "",
         password: user_data.password ?? "",
         level: user_data.level ?? "2",
+        alamat: user_data.alamat,
     });
 
     console.log(user_data);
@@ -102,6 +104,8 @@ export default function Register({ user_data }) {
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
+
+                <Textarea label="Alamat" value={data.alamat} />
 
                 <div className="flex items-center justify-end mt-4">
                     <Link className="btn btn-outline btn-sm ml-4" href="/">

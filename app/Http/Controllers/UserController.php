@@ -60,6 +60,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->level = $request->level;
+        $user->alamat = $request->alamat;
         $user->save();
 
         if ($id = Auth::user()) {
@@ -132,8 +133,8 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->level = $request->level;
+        $user->alamat = $request->alamat;
         $user->save();
-
         return to_route('user.index');
     }
 

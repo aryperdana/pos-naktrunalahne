@@ -9,6 +9,32 @@ export default function Welcome({ auth }) {
             <div className="w-full py-8">
                 {/* Navbar section */}
                 <NavbarLayout user={auth?.user?.name} userId={auth?.user?.id} />
+                {/* Banner diskon */}
+                <div className="alert alert-info max-w-7xl mx-auto my-4">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        className="stroke-info shrink-0 w-6 h-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <div>
+                        <h3 className="font-bold">Diskon!</h3>
+                        <div className="text-xs">Lihat diskon hari ini!!!</div>
+                    </div>
+                    <Link
+                        href="/diskon-produk"
+                        className="btn btn-ghost btn-sm"
+                    >
+                        lihat
+                    </Link>
+                </div>
                 {/* Hero Section */}
                 <div
                     className="hero h-96 max-w-7xl mx-auto my-4"

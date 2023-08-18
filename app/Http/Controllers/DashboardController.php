@@ -26,9 +26,31 @@ class DashboardController extends Controller
         ->select('pesanans.tanggal', DB::raw('SUM(IFNULL(detail_pesanans.sub_total, 0)) AS total'))
         ->get();
 
+        $totalByCategory = Barang::select('id_kategori_barang', DB::raw('SUM(stok) as total'))
+        ->groupBy('id_kategori_barang')->with('kategori')
+        ->get();
+
+        $total_online =  Pesanan::leftJoin('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
+        ->where('is_online','=',1)->select('is_online', DB::raw('SUM(IFNULL(detail_pesanans.sub_total, 0)) AS total'))
+        ->get();
+
+        $total_offline =  Pesanan::leftJoin('detail_pesanans', 'pesanans.id', '=', 'detail_pesanans.id_pesanan')
+        ->where('is_online','=',0)->select('is_online', DB::raw('SUM(IFNULL(detail_pesanans.sub_total, 0)) AS total'))
+        ->get();
+     
+      
+
+
         $key = $request->key;
         $barang = Barang::all();
         // $dataDetail = Pesanan::with('pesanan')->with('detail_barang')->get();
-        return Inertia::render('AdminPanel/Pages/Dashboard', [ 'user' => Auth::user(), 'dataDetail' => $results]);
+        return Inertia::render('AdminPanel/Pages/Dashboard',
+         ['user' => Auth::user(),
+          'dataDetail' => $results,
+          'totalBarangByKategori' => $totalByCategory,
+          'totalOnline' => $total_online,
+          'totalOffline' => $total_offline,
+          ]
+        );
     }
 }
